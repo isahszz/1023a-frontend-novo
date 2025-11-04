@@ -1,42 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-type ProdutoType = {
+interface Produto {
   _id: string;
   nome: string;
   preco: number;
-  quantidade: number; // quantidade de cada produto no carrinho
-};
+  quantidade: number;
+}
 
-const Carrinho = () => {
-  const [produtos, setProdutos] = useState<ProdutoType[]>([
-    { _id: '1', nome: 'Perfume', preco: 50, quantidade: 2 },
-    { _id: '2', nome: 'Creme', preco: 30, quantidade: 1 },
-  ]);
-
-  const [total, setTotal] = useState<number>(0);
+export default function TotalCarrinho() {
+  const [carrinho, setCarrinho] = useState<Produto[]>([]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    // Calcula o total sempre que os produtos mudarem
-    const novoTotal = produtos.reduce(
-      (acc, produto) => acc + produto.preco * produto.quantidade,
-      0
-    );
-    setTotal(novoTotal);
-  }, [produtos]);
+    async function carregarCarrinho() {
+      try {
+        const resposta = await axios.get("http://localhost:8000/carrinho");
+        const itens = resposta.data;
+
+        setCarrinho(itens);
+
+        // soma o total automaticamente
+        const soma = itens.reduce(
+          (acc: number, item: Produto) => acc + item.preco * item.quantidade,
+          0
+        );
+        setTotal(soma);
+      } catch (erro) {
+        console.error("Erro ao carregar carrinho:", erro);
+      }
+    }
+
+    carregarCarrinho();
+  }, []);
 
   return (
-    <div>
-      <h1>Carrinho</h1>
-      <ul>
-        {produtos.map((produto) => (
-          <li key={produto._id}>
-            {produto.nome} - R${produto.preco} x {produto.quantidade}
-          </li>
-        ))}
-      </ul>
-      <h2>Total: R${total}</h2>
+    <div className="carrinho-container">
+      <h2> Meu Carrinho</h2>
+
+      {carrinho.length === 0 ? (
+        <p>Seu carrinho está vazio.</p>
+      ) : (
+        <div>
+          {carrinho.map((item) => (
+            <div key={item._id} className="item-carrinho">
+              <p>
+                {item.nome} — R$ {item.preco.toFixed(2)} × {item.quantidade}
+              </p>
+            </div>
+          ))}
+
+          <h3>
+            Total: <span>R$ {total.toFixed(2)}</span>
+          </h3>
+        </div>
+      )}
     </div>
   );
-};
-
-export default Carrinho;
+}
