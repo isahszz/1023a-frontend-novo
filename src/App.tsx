@@ -3,6 +3,8 @@ import api from './api/api'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
+import TotalCarrinho from './componentes/Carrinho/total-carrinho'
+
 type ProdutoType = {
   _id: string,
   nome: string,
@@ -21,43 +23,33 @@ function App() {
   const [carrinho, setCarrinho] = useState<ItemCarrinhoType[]>([])
   const [total, setTotal] = useState<number>(0)
 
-  // Carregar produtos
   useEffect(() => {
     api.get("/produtos")
       .then((response) => setProdutos(response.data))
       .catch((error) => console.error('Erro ao buscar produtos:', error))
   }, [])
 
-  // Atualizar total sempre que o carrinho mudar
   useEffect(() => {
     const novoTotal = carrinho.reduce((acc, item) => acc + (item.produto.preco * item.quantidade), 0)
     setTotal(novoTotal)
   }, [carrinho])
 
-  // Adicionar item no carrinho
-  function adicionarCarrinho(produtoId: string) {
-    const produtoSelecionado = produtos.find(p => p._id === produtoId)
-
-    
-      
-    if (!produtoSelecionado) return
-
-    setCarrinho(prev => {
-      const itemExistente = prev.find(item => item.produto._id === produtoId)
-      if (itemExistente) {
-        // aumenta a quantidade se já existe
-        return prev.map(item =>
-          item.produto._id === produtoId
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item
-        )
-      } else {
-        // adiciona novo item
-        return [...prev, { produto: produtoSelecionado, quantidade: 1 }]
-      }
-    })
+  function adicionarItemCarrinho(produtoId: string) {
+    console.log(`Adicionando produto ${produtoId} ao carrinho`)
+    api.post("/adicionarItem", { produtoId, quantidade: 1 })
+      .then(() => alert("Produto adicionado com sucesso!"))
+      .catch((error) => {
+        if (error.response) {
+          console.error(`Servidor respondeu mas com o erro:${error.response.data.mensagem ?? error.response.data}`)
+          alert(`Servidor respondeu mas com o erro:${error.response.data.mensagem
+            ?? " olhe o console do navegador para mais informações"}"`)
+        }
+        else { //Não teve resposta do servidor, então mostramos o erro do axios.
+          console.error(`Erro Axios: ${error.message}`)
+          alert(`Servidor não respondeu, você ligou o backend? Erro do Axios: ${error.message ?? "Erro desconhecido: Chame o TERE"}`)
+        }
+      })
   }
-
   return (
     <>
       <header>
@@ -77,15 +69,14 @@ function App() {
             <p>R$ {produto.preco}</p>
             <img src={produto.urlfoto} alt={produto.nome} />
             <p>{produto.descricao}</p>
-            <button onClick={() => adicionarCarrinho(produto._id)}>
+            <button onClick={() => adicionarItemCarrinho(produto._id)}>
               Adicionar ao carrinho
             </button>
           </div>
         ))}
       </div>
 
-      {/* Exibição do carrinho */}
-      <div className="carrinho-container">
+      {/* <div className="carrinho-container">
         <h2>Carrinho</h2>
         {carrinho.length === 0 ? (
           <p>Seu carrinho está vazio</p>
@@ -93,14 +84,17 @@ function App() {
           <ul>
             {carrinho.map((item) => (
               <li key={item.produto._id}>
-      
-                {item.produto.nome} — {item.quantidade}x — R${(Number( item.produto.preco ) * item.quantidade).toFixed(2)}
+
+                {item.produto.nome} — {item.quantidade}x — R${(Number(item.produto.preco) * item.quantidade).toFixed(2)}
               </li>
             ))}
           </ul>
         )}
-        <h3>Total: R$ {total.toFixed (2)}</h3>
-      </div>
+        <h3>Total: R$ {total.toFixed(2)}</h3>
+
+      </div> */}
+
+      <TotalCarrinho />
     </>
   )
 }

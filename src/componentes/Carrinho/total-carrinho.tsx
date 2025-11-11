@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/api";
 
 interface Produto {
   _id: string;
@@ -8,6 +8,8 @@ interface Produto {
   quantidade: number;
 }
 
+
+ 
 export default function TotalCarrinho() {
   const [carrinho, setCarrinho] = useState<Produto[]>([]);
   const [total, setTotal] = useState(0);
@@ -15,8 +17,9 @@ export default function TotalCarrinho() {
   useEffect(() => {
     async function carregarCarrinho() {
       try {
-        const resposta = await axios.get("http://localhost:8000/carrinho");
+        const resposta = await api.get("/carrinho");
         const itens = resposta.data;
+        console.log("Itens do carrinho:", itens);
 
         setCarrinho(itens);
 

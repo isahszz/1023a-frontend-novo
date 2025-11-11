@@ -1,4 +1,4 @@
-/* ======= ESTILO GERAL ======= */
+/* -------------------- RESET & BASE -------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -7,144 +7,156 @@
 }
 
 body {
-  background-color: #f9f7fc;
+  background: linear-gradient(135deg, #f3ecff, #f9f7fc);
   color: #4a3f60;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  padding-bottom: 3rem;
 }
 
-/* ======= CABEÇALHO ======= */
+/* -------------------- HEADER -------------------- */
 header {
-  background-color: #c8a2ff;
-  color: white;
   width: 100%;
-  padding: 1.5rem 0;
+  background: linear-gradient(90deg, #a770ff, #c8a2ff);
+  color: #fff;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(180, 130, 255, 0.4);
-  border-radius: 0 0 20px 20px;
+  padding: 2rem 1rem;
+  box-shadow: 0 4px 20px rgba(150, 100, 255, 0.3);
+  border-radius: 0 0 30px 30px;
 }
 
 header h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   letter-spacing: 1px;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* ======= CONTEÚDO PRINCIPAL ======= */
+/* -------------------- MAIN CONTAINER -------------------- */
 #root {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
   text-align: center;
 }
 
-/* ======= INPUT DE BUSCA ======= */
+/* -------------------- INPUT -------------------- */
 input[type="text"] {
-  padding: 0.8rem 1rem;
-  width: 80%;
-  border: 2px solid #c8a2ff;
-  border-radius: 10px;
-  outline: none;
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
+  width: 85%;
+  padding: 0.9rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 12px;
   background-color: #fff;
+  box-shadow: 0 3px 8px rgba(167, 112, 255, 0.15);
+  font-size: 1rem;
+  transition: 0.3s;
+  margin-bottom: 2rem;
 }
 
 input[type="text"]:focus {
-  border-color: #a770ff;
-  box-shadow: 0 0 10px rgba(167, 112, 255, 0.3);
+  border-color: #b48cff;
+  box-shadow: 0 0 12px rgba(167, 112, 255, 0.3);
+  outline: none;
 }
 
-/* ======= LINK DE CADASTRO ======= */
+/* -------------------- LINKS -------------------- */
 a {
   display: inline-block;
-  background-color: #a770ff;
-  color: white;
+  background: linear-gradient(90deg, #a770ff, #b48cff);
+  color: #fff;
   text-decoration: none;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
+  padding: 0.9rem 1.5rem;
+  border-radius: 10px;
   font-weight: 500;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
 }
 
 a:hover {
-  background-color: #915aff;
-  box-shadow: 0 0 10px rgba(167, 112, 255, 0.4);
+  background: linear-gradient(90deg, #915aff, #a770ff);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(150, 100, 255, 0.35);
 }
 
-/* ======= CONTAINER DE PRODUTOS ======= */
+/* -------------------- PRODUTOS -------------------- */
 .produtos-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
-/* ======= CARD DE PRODUTO ======= */
 .produto-card {
   background-color: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(150, 100, 255, 0.2);
-  padding: 1.5rem;
-  width: 250px;
+  box-shadow: 0 6px 20px rgba(150, 100, 255, 0.15);
+  padding: 1.8rem 1.2rem;
+  width: 260px;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .produto-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(150, 100, 255, 0.3);
-}
-
-.produto-card h2 {
-  color: #5e478a;
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(150, 100, 255, 0.25);
 }
 
 .produto-card img {
   width: 100%;
-  height: 180px;
+  height: 190px;
   object-fit: cover;
   border-radius: 15px;
-  margin-bottom: 0.8rem;
-  box-shadow: 0 4px 10px rgba(150, 100, 255, 0.2);
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(150, 100, 255, 0.2);
+}
+
+.produto-card h2 {
+  color: #5e478a;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
 }
 
 .produto-card p {
-  color: #5e478a;
-  margin: 0.4rem 0;
+  color: #6b5b91;
   font-size: 0.95rem;
+  margin-bottom: 0.6rem;
 }
 
 button {
-  background-color: #a770ff;
+  background: linear-gradient(90deg, #a770ff, #b48cff);
   color: white;
   border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.8rem 1.3rem;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1rem;
-  margin-top: 0.5rem;
+  font-weight: 500;
   transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(167, 112, 255, 0.25);
 }
 
 button:hover {
-  background-color: #915aff;
-  box-shadow: 0 0 10px rgba(167, 112, 255, 0.4);
+  background: linear-gradient(90deg, #915aff, #a770ff);
+  box-shadow: 0 5px 15px rgba(167, 112, 255, 0.4);
+  transform: translateY(-3px);
 }
 
-/* ======= RESPONSIVIDADE ======= */
 @media (max-width: 768px) {
   .produto-card {
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
   }
 
   input[type="text"] {
     width: 95%;
+  }
+
+  header h1 {
+    font-size: 1.7rem;
   }
 }
