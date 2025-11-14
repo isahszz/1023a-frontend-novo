@@ -2,8 +2,7 @@ import './App.css'
 import api from './api/api'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-
-import TotalCarrinho from './componentes/Carrinho/total-carrinho'
+import { jwtDecode } from "jwt-decode"
 
 type ProdutoType = {
   _id: string,
@@ -18,49 +17,87 @@ type ItemCarrinhoType = {
   quantidade: number
 }
 
+interface TokenPayload {
+  nome: string;
+  tipo: string;
+}
+
 function App() {
   const [produtos, setProdutos] = useState<ProdutoType[]>([])
   const [carrinho, setCarrinho] = useState<ItemCarrinhoType[]>([])
   const [total, setTotal] = useState<number>(0)
+  const [user, setUser] = useState<TokenPayload | null>(null)
 
+  // Carregar usuário do token
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      try {
+        const decoded: TokenPayload = jwtDecode(token)
+        setUser(decoded)
+      } catch (err) {
+        console.error("Token inválido:", err)
+      }
+    }
+  }, [])
+
+  // Carregar produtos
   useEffect(() => {
     api.get("/produtos")
       .then((response) => setProdutos(response.data))
       .catch((error) => console.error('Erro ao buscar produtos:', error))
   }, [])
 
+  // Atualizar total sempre que o carrinho mudar
   useEffect(() => {
-    const novoTotal = carrinho.reduce((acc, item) => acc + (item.produto.preco * item.quantidade), 0)
+    const novoTotal = carrinho.reduce(
+      (acc, item) => acc + (item.produto.preco * item.quantidade),
+      0
+    )
     setTotal(novoTotal)
   }, [carrinho])
 
-  function adicionarItemCarrinho(produtoId: string) {
-    console.log(`Adicionando produto ${produtoId} ao carrinho`)
-    api.post("/adicionarItem", { produtoId, quantidade: 1 })
-      .then(() => alert("Produto adicionado com sucesso!"))
-      .catch((error) => {
-        if (error.response) {
-          console.error(`Servidor respondeu mas com o erro:${error.response.data.mensagem ?? error.response.data}`)
-          alert(`Servidor respondeu mas com o erro:${error.response.data.mensagem
-            ?? " olhe o console do navegador para mais informações"}"`)
-        }
-        else { //Não teve resposta do servidor, então mostramos o erro do axios.
-          console.error(`Erro Axios: ${error.message}`)
-          alert(`Servidor não respondeu, você ligou o backend? Erro do Axios: ${error.message ?? "Erro desconhecido: Chame o TERE"}`)
-        }
-      })
+  // Adicionar item ao carrinho
+  function adicionarCarrinho(produtoId: string) {
+    const produtoSelecionado = produtos.find(p => p._id === produtoId)
+
+    if (!produtoSelecionado) return
+
+    setCarrinho(prev => {
+      const itemExistente = prev.find(item => item.produto._id === produtoId)
+      if (itemExistente) {
+        return prev.map(item =>
+          item.produto._id === produtoId
+            ? { ...item, quantidade: item.quantidade + 1 }
+            : item
+        )
+      } else {
+        return [...prev, { produto: produtoSelecionado, quantidade: 1 }]
+      }
+    })
   }
+
   return (
     <>
-      <header>
+      {/* HEADER */}
+      <header className='header' >
         <h1>Sorveteria</h1>
+
+        {user && (
+          <div >
+            {user.nome} ({user.tipo})
+          </div>
+        )}
       </header>
 
-      <Link to="/cadastrar-produto">Cadastrar Produto</Link>
+      {/* MENU */}
+      <nav>
+        <Link to="/cadastrar-produto">Cadastrar Produto</Link>
+        <br />
+      </nav>
 
-      <div>
-        <h2>Lista de Produtos</h2>
-      </div>
+      {/* LISTA DE PRODUTOS */}
+      <h2>Lista de Produtos</h2>
 
       <div className="produtos-container">
         {produtos.map((produto) => (
@@ -69,32 +106,32 @@ function App() {
             <p>R$ {produto.preco}</p>
             <img src={produto.urlfoto} alt={produto.nome} />
             <p>{produto.descricao}</p>
-            <button onClick={() => adicionarItemCarrinho(produto._id)}>
+            <button onClick={() => adicionarCarrinho(produto._id)}>
               Adicionar ao carrinho
             </button>
           </div>
         ))}
       </div>
 
-      {/* <div className="carrinho-container">
+      {/* CARRINHO */}
+      <div className="carrinho-container">
         <h2>Carrinho</h2>
+
         {carrinho.length === 0 ? (
           <p>Seu carrinho está vazio</p>
         ) : (
           <ul>
             {carrinho.map((item) => (
               <li key={item.produto._id}>
-
-                {item.produto.nome} — {item.quantidade}x — R${(Number(item.produto.preco) * item.quantidade).toFixed(2)}
+                {item.produto.nome} — {item.quantidade}x — 
+                R${(item.produto.preco * item.quantidade).toFixed(2)}
               </li>
             ))}
           </ul>
         )}
+
         <h3>Total: R$ {total.toFixed(2)}</h3>
-
-      </div> */}
-
-      <TotalCarrinho />
+      </div>
     </>
   )
 }
