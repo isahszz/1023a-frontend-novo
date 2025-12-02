@@ -28,7 +28,6 @@ function App() {
   const [total, setTotal] = useState<number>(0)
   const [user, setUser] = useState<TokenPayload | null>(null)
 
-  // Carregar usuário do token
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
@@ -41,14 +40,12 @@ function App() {
     }
   }, [])
 
-  // Carregar produtos
   useEffect(() => {
     api.get("/produtos")
       .then((response) => setProdutos(response.data))
       .catch((error) => console.error('Erro ao buscar produtos:', error))
   }, [])
 
-  // Atualizar total sempre que o carrinho mudar
   useEffect(() => {
     const novoTotal = carrinho.reduce(
       (acc, item) => acc + (item.produto.preco * item.quantidade),
@@ -57,7 +54,6 @@ function App() {
     setTotal(novoTotal)
   }, [carrinho])
 
-  // Adicionar item ao carrinho
   function adicionarCarrinho(produtoId: string) {
     const produtoSelecionado = produtos.find(p => p._id === produtoId)
 
@@ -76,6 +72,19 @@ function App() {
       }
     })
   }
+  function removerItemCarrinho(produtoid:string){
+  api.delete(`/removerItem/${id}`)
+    .then(() => alert("Item removido com sucesso!"))
+    .catch((error) => {
+      if (error.response) {
+        console.error(`Erro do servidor:`, error.response.data);
+        alert(error.response.data.mensagem ?? "Erro no servidor")
+      } else {
+        console.error(`Erro Axios: ${error.message}`);
+        alert("Servidor não respondeu. Erro do Axios.");
+      }
+    });
+}
 
   return (
     <>

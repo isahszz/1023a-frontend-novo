@@ -17,12 +17,11 @@ export default function TotalCarrinho() {
       try {
         const resposta = await api.get("/carrinho");
         
-        const itens = resposta.data.itens;  // ✔️ pega só os itens
+        const itens = resposta.data.itens;  
         console.log("Itens do carrinho:", itens);
 
         setCarrinho(itens);
 
-        // ✔️ soma correta
         const soma = itens.reduce(
           (acc: number, item: ItemCarrinho) => acc + item.preco * item.quantidade,
           0

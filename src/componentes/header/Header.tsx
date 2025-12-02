@@ -28,7 +28,7 @@ export default function Header() {
 
       {user && (
         <div className="user-info">
-          {user.nome} — {user.tipo.toUpperCase()}
+          {user.nome} — {user.tipo}
         </div>
       )}
     </header>

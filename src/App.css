@@ -5,9 +5,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ======== FUNDO ======== */
 body {
-  background: linear-gradient(135deg, #f3ecff, #f9f7fc);
-  color: #4a3f60;
+  background: linear-gradient(135deg, #bda6ff, #f4efff);
+  color: #6d4ccf;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,23 +16,35 @@ body {
   padding-bottom: 3rem;
 }
 
+/* ======== HEADER (TÍTULO CENTRAL) ======== */
 header {
   width: 100%;
-  background: linear-gradient(90deg, #a770ff, #c8a2ff);
-  color: #fff;
-  text-align: center;
+  position: relative;
   padding: 2rem 1rem;
-  box-shadow: 0 4px 20px rgba(150, 100, 255, 0.3);
-  border-radius: 0 0 30px 30px;
+  text-align: center;
+  background: none; /* sem fundo roxo */
 }
 
 header h1 {
-  font-size: 2.2rem;
-  letter-spacing: 1px;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #000; /* preto */
 }
 
+/* ======== USUÁRIO NO CANTO DIREITO ======== */
+.user-info {
+  position: absolute;
+  right: 30px;
+  top: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 6px 12px;
+  border-radius: 10px;
+  color: #000;
+}
+
+/* ======== ROOT ======== */
 #root {
   max-width: 1400px;
   margin: 3rem auto;
@@ -39,42 +52,47 @@ header h1 {
   text-align: center;
 }
 
+/* ======== INPUT ======== */
 input[type="text"] {
   width: 85%;
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.2rem;
   border: 2px solid transparent;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 3px 8px rgba(167, 112, 255, 0.15);
-  font-size: 1rem;
+  border-radius: 14px;
+  background-color: #ffffff;
+  font-size: 1.05rem;
   transition: 0.3s;
   margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
 
 input[type="text"]:focus {
-  border-color: #b48cff;
-  box-shadow: 0 0 12px rgba(167, 112, 255, 0.3);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
   outline: none;
 }
 
+/* ======== LINK BOTÃO ======== */
 a {
   display: inline-block;
-  background: linear-gradient(90deg, #a770ff, #b48cff);
-  color: #fff;
-  text-decoration: none;
-  padding: 0.9rem 1.5rem;
-  border-radius: 10px;
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+  color: white;
+  padding: 1rem 1.6rem;
+  border-radius: 12px;
+  font-size: 1rem;
   font-weight: 500;
+  text-decoration: none;
   transition: all 0.3s ease;
   margin-bottom: 2rem;
+  box-shadow: 0 5px 14px rgba(139, 92, 246, 0.3);
 }
 
 a:hover {
-  background: linear-gradient(90deg, #915aff, #a770ff);
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
   transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(150, 100, 255, 0.35);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
 }
 
+/* ======== PRODUTOS ======== */
 .produtos-container {
   display: flex;
   flex-wrap: wrap;
@@ -84,62 +102,62 @@ a:hover {
 
 .produto-card {
   background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(150, 100, 255, 0.15);
-  padding: 1.8rem 1.2rem;
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.18);
+  padding: 2rem 1.4rem;
   width: 260px;
   text-align: center;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
 .produto-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(150, 100, 255, 0.25);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.25);
 }
 
 .produto-card img {
   width: 100%;
   height: 190px;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 18px;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 15px rgba(150, 100, 255, 0.2);
+  box-shadow: 0 5px 18px rgba(139, 92, 246, 0.25);
 }
 
 .produto-card h2 {
-  color: #5e478a;
-  font-size: 1.2rem;
-  font-weight: 600;
+  color: #5635a2;
+  font-size: 1.25rem;
   margin-bottom: 0.4rem;
+  font-weight: 600;
 }
 
 .produto-card p {
   color: #6b5b91;
   font-size: 0.95rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.7rem;
 }
 
+/* ======== BOTÕES ======== */
 button {
-  background: linear-gradient(90deg, #a770ff, #b48cff);
+  background: linear-gradient(90deg, #7c3aed, #8b5cf6);
   color: white;
   border: none;
-  padding: 0.8rem 1.3rem;
-  border-radius: 10px;
-  cursor: pointer;
+  padding: 0.9rem 1.4rem;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 500;
+  cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(167, 112, 255, 0.25);
+  box-shadow: 0 5px 14px rgba(139, 92, 246, 0.3);
 }
 
 button:hover {
-  background: linear-gradient(90deg, #915aff, #a770ff);
-  box-shadow: 0 5px 15px rgba(167, 112, 255, 0.4);
   transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(139, 92, 246, 0.45);
+  background: linear-gradient(90deg, #6d28d9, #7c3aed);
 }
 
+/* ======== RESPONSIVO ======== */
 @media (max-width: 768px) {
   .produto-card {
     width: 100%;
@@ -151,53 +169,16 @@ button:hover {
   }
 
   header h1 {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
+  }
+
+  .user-info {
+    top: 16px;
+    right: 20px;
   }
 }
 
-.header {
-  width: 100%;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #6a1b9a;
-  color: white;
-}
-
-.titulo {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.usuario-logado {
-  font-size: 0.95rem;
-  background-color: rgba(255, 255, 255, 0.12);
-  padding: 6px 10px;
-  border-radius: 8px;
-}
-
-.usuario-logado.vazio {
-  opacity: 0.8;
-  font-style: italic;
-}
-
-.header {
-  width: 100%;
-  padding: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ae5fd8;
-}
-
-.user-info {
-  float: right;
-  font-size: 16px;
-  font-weight: bold;
-}
-
+/* Remove bolinha do <li> */
 li {
   list-style-type: none;
 }
-

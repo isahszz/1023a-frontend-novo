@@ -47,12 +47,7 @@ export default function ListarUsuariosAdmin() {
             <div
               key={usuario._id}
               className="usuario-item"
-              style={{
-                background: "#f3f3f3",
-                borderRadius: "10px",
-                padding: "10px",
-                marginBottom: "10px",
-              }}
+            
             >
               <p><strong>Nome:</strong> {usuario.nome}</p>
               <p><strong>Email:</strong> {usuario.email}</p>
