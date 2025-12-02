@@ -72,19 +72,13 @@ function App() {
       }
     })
   }
-  function removerItemCarrinho(produtoid:string){
-  api.delete(`/removerItem/${id}`)
-    .then(() => alert("Item removido com sucesso!"))
-    .catch((error) => {
-      if (error.response) {
-        console.error(`Erro do servidor:`, error.response.data);
-        alert(error.response.data.mensagem ?? "Erro no servidor")
-      } else {
-        console.error(`Erro Axios: ${error.message}`);
-        alert("Servidor não respondeu. Erro do Axios.");
-      }
-    });
-}
+  const removerItem = (produtoId: string) => {
+  api.delete(`/carrinho/remover/${produtoId}`)
+    .then(() => {
+      setCarrinho(prev => prev.filter(item => item.produto._id !== produtoId));
+    })
+    .catch(() => alert("Erro ao remover item"));
+};
 
   return (
     <>
@@ -132,8 +126,14 @@ function App() {
           <ul>
             {carrinho.map((item) => (
               <li key={item.produto._id}>
-                {item.produto.nome} — {item.quantidade}x — 
+                {item.produto.nome} — {item.quantidade}x —
                 R${(item.produto.preco * item.quantidade).toFixed(2)}
+                <button
+                  onClick={() => removerItem(item.produto._id)}
+                  style={{ marginLeft: "10px", color: "white", background: "red" }}
+                >
+                  Remover
+                </button>
               </li>
             ))}
           </ul>
