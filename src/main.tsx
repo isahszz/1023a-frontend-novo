@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastrar-produto" element={<CadastrarProduto />} />
-          <Route path="/finalizar-compra" element={<CartaoPagamento />} />
+        <Route path="/finalizar-compra" element={ <Elements stripe={stripe}><CartaoPagamento/></Elements>} />
         </Routes>
       </BrowserRouter>
     </Elements>

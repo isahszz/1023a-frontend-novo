@@ -12,9 +12,19 @@ type ProdutoType = {
   descricao: string,
 }
 
-type ItemCarrinhoType = {
-  produto: ProdutoType,
-  quantidade: number
+interface ItemCarrinho {
+  produtoId: string;
+  quantidade: number;
+  precoUnitario: number;
+  nome: string;
+}
+
+interface Carrinho {
+  _id: string;
+  usuarioId: string;
+  itens: ItemCarrinho[];
+  dataAtualizacao: Date;
+  total: number;
 }
 
 interface TokenPayload {
@@ -24,8 +34,7 @@ interface TokenPayload {
 
 function App() {
   const [produtos, setProdutos] = useState<ProdutoType[]>([])
-  const [carrinho, setCarrinho] = useState<ItemCarrinhoType[]>([])
-  const [total, setTotal] = useState<number>(0)
+  const [carrinho, setCarrinho] = useState<Carrinho>()
   const [user, setUser] = useState<TokenPayload | null>(null)
 
   useEffect(() => {
@@ -44,41 +53,34 @@ function App() {
     api.get("/produtos")
       .then((response) => setProdutos(response.data))
       .catch((error) => console.error('Erro ao buscar produtos:', error))
+    api.get("/carrinho")
+      .then((response) => setCarrinho(response.data))
+      .catch((error) => console.error('Erro ao buscar carrinho:', error))
   }, [])
 
-  useEffect(() => {
-    const novoTotal = carrinho.reduce(
-      (acc, item) => acc + (item.produto.preco * item.quantidade),
-      0
-    )
-    setTotal(novoTotal)
-  }, [carrinho])
-
-  function adicionarCarrinho(produtoId: string) {
-    const produtoSelecionado = produtos.find(p => p._id === produtoId)
-
-    if (!produtoSelecionado) return
-
-    setCarrinho(prev => {
-      const itemExistente = prev.find(item => item.produto._id === produtoId)
-      if (itemExistente) {
-        return prev.map(item =>
-          item.produto._id === produtoId
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item
-        )
-      } else {
-        return [...prev, { produto: produtoSelecionado, quantidade: 1 }]
-      }
-    })
+  async function adicionarCarrinho(produtoId: string) {
+    const resultado = await api.post(`/adicionarItem`, { produtoId, quantidade: 1 })
+    setCarrinho(resultado.data)
   }
   const removerItem = (produtoId: string) => {
-  api.delete(`/carrinho/remover/${produtoId}`)
-    .then(() => {
-      setCarrinho(prev => prev.filter(item => item.produto._id !== produtoId));
-    })
-    .catch(() => alert("Erro ao remover item"));
+      console.log("Removendo item:", produtoId);
+      api.delete(`/carrinho/remover/${produtoId}`)
+        .then((response) => {
+          setCarrinho(response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao remover item do carrinho:", error);
+        });
+    
+        const buscarProdutos = () => {
+  api.get(`/produtos/buscar?termo=${buscarProdutos}`)
+    .then(res => setProdutos(res.data))
+    .catch(() => console.log("Erro ao buscar produtos"));
 };
+  };
+  
+    
+
 
   return (
     <>
@@ -112,24 +114,27 @@ function App() {
             <button onClick={() => adicionarCarrinho(produto._id)}>
               Adicionar ao carrinho
             </button>
+
           </div>
         ))}
       </div>
+
+     
 
       {/* CARRINHO */}
       <div className="carrinho-container">
         <h2>Carrinho</h2>
 
-        {carrinho.length === 0 ? (
+        {carrinho?.itens.length === 0 ? (
           <p>Seu carrinho está vazio</p>
         ) : (
           <ul>
-            {carrinho.map((item) => (
-              <li key={item.produto._id}>
-                {item.produto.nome} — {item.quantidade}x —
-                R${(item.produto.preco * item.quantidade).toFixed(2)}
+            {carrinho?.itens.map((item) => (
+              <li key={item.produtoId}>
+                {item.nome} — {item.quantidade}x —
+                R${(item.precoUnitario * item.quantidade).toFixed(2)}
                 <button
-                  onClick={() => removerItem(item.produto._id)}
+                  onClick={() => removerItem(item.produtoId)}
                   style={{ marginLeft: "10px", color: "white", background: "red" }}
                 >
                   Remover
@@ -138,8 +143,11 @@ function App() {
             ))}
           </ul>
         )}
+        <Link to="/finalizar-compra">Pagamento</Link>
 
-        <h3>Total: R$ {total.toFixed(2)}</h3>
+
+
+        <h3>Total: R$ {carrinho?.total.toFixed(2)}</h3>
       </div>
     </>
   )
