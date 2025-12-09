@@ -36,9 +36,8 @@ function App() {
   const [produtos, setProdutos] = useState<ProdutoType[]>([])
   const [carrinho, setCarrinho] = useState<Carrinho>()
   const [user, setUser] = useState<TokenPayload | null>(null)
-  const [busca, setBuscar] = useState([]);
-
-
+  const [busca, setBusca] = useState("")
+  const [mensagem, setMensagem] = useState<string>("");
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -64,6 +63,7 @@ function App() {
   async function adicionarCarrinho(produtoId: string) {
     const resultado = await api.post(`/adicionarItem`, { produtoId, quantidade: 1 })
     setCarrinho(resultado.data)
+    setMensagem("Produto adicionado ao carrinho")
   }
   const removerItem = (produtoId: string) => {
     console.log("Removendo item:", produtoId);
@@ -73,16 +73,16 @@ function App() {
       })
       .catch((error) => {
         console.error("Erro ao remover item do carrinho:", error);
+        setMensagem("Produto removido do carrinho")
       });
-  };
+
+  }
   const buscarProdutos = () => {
-  api.get(`/produtos/buscar?termo=${busca}`)
-    .then((res) => setProdutos(res.data))
-    .catch(() => console.log("Erro ao buscar produtos"));
-};
-
-
-
+    api.get(`/produtos/buscar?termo=${busca}`)
+      .then((res) => setProdutos(res.data))
+      .catch(() => console.log("Erro ao buscar produtos"));
+       setMensagem("Buscando produtos");
+  };
 
   return (
     <>
@@ -110,6 +110,9 @@ function App() {
       <input
         type="text"
         placeholder="Buscar produto"
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+        onKeyUp={buscarProdutos}
         style={{ padding: "8px", marginBottom: "20px", width: "300px" }}
       />
 
@@ -129,6 +132,11 @@ function App() {
         ))}
       </div>
 
+      {mensagem && (
+        <p style={{ color: "blue", fontWeight: "bold" }}>
+          {mensagem}
+        </p>
+      )}
 
 
       {/* CARRINHO */}
