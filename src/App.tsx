@@ -36,6 +36,9 @@ function App() {
   const [produtos, setProdutos] = useState<ProdutoType[]>([])
   const [carrinho, setCarrinho] = useState<Carrinho>()
   const [user, setUser] = useState<TokenPayload | null>(null)
+  const [busca, setBuscar] = useState([]);
+
+
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -63,23 +66,22 @@ function App() {
     setCarrinho(resultado.data)
   }
   const removerItem = (produtoId: string) => {
-      console.log("Removendo item:", produtoId);
-      api.delete(`/carrinho/remover/${produtoId}`)
-        .then((response) => {
-          setCarrinho(response.data);
-        })
-        .catch((error) => {
-          console.error("Erro ao remover item do carrinho:", error);
-        });
-    
-        const buscarProdutos = () => {
-  api.get(`/produtos/buscar?termo=${buscarProdutos}`)
-    .then(res => setProdutos(res.data))
+    console.log("Removendo item:", produtoId);
+    api.delete(`/carrinho/remover/${produtoId}`)
+      .then((response) => {
+        setCarrinho(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao remover item do carrinho:", error);
+      });
+  };
+  const buscarProdutos = () => {
+  api.get(`/produtos/buscar?termo=${busca}`)
+    .then((res) => setProdutos(res.data))
     .catch(() => console.log("Erro ao buscar produtos"));
 };
-  };
-  
-    
+
+
 
 
   return (
@@ -104,6 +106,14 @@ function App() {
       {/* LISTA DE PRODUTOS */}
       <h2>Lista de Produtos</h2>
 
+      {/* CAMPO DE BUSCA */}
+      <input
+        type="text"
+        placeholder="Buscar produto"
+        style={{ padding: "8px", marginBottom: "20px", width: "300px" }}
+      />
+
+
       <div className="produtos-container">
         {produtos.map((produto) => (
           <div key={produto._id} className="produto-card">
@@ -119,7 +129,7 @@ function App() {
         ))}
       </div>
 
-     
+
 
       {/* CARRINHO */}
       <div className="carrinho-container">

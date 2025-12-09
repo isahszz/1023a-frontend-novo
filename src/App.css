@@ -5,7 +5,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* ======== FUNDO ======== */
 body {
   background: linear-gradient(135deg, #bda6ff, #f4efff);
   color: #6d4ccf;
@@ -16,22 +15,20 @@ body {
   padding-bottom: 3rem;
 }
 
-/* ======== HEADER (TÍTULO CENTRAL) ======== */
 header {
   width: 100%;
   position: relative;
   padding: 2rem 1rem;
   text-align: center;
-  background: none; /* sem fundo roxo */
+  background: none; /
 }
 
 header h1 {
   font-size: 2.4rem;
   font-weight: 700;
-  color: #000; /* preto */
+  color: #000; 
 }
 
-/* ======== USUÁRIO NO CANTO DIREITO ======== */
 .user-info {
   position: absolute;
   right: 30px;
@@ -44,7 +41,6 @@ header h1 {
   color: #000;
 }
 
-/* ======== ROOT ======== */
 #root {
   max-width: 1400px;
   margin: 3rem auto;
@@ -52,7 +48,6 @@ header h1 {
   text-align: center;
 }
 
-/* ======== INPUT ======== */
 input[type="text"] {
   width: 85%;
   padding: 1rem 1.2rem;
@@ -71,7 +66,6 @@ input[type="text"]:focus {
   outline: none;
 }
 
-/* ======== LINK BOTÃO ======== */
 a {
   display: inline-block;
   background: linear-gradient(90deg, #8b5cf6, #a78bfa);
@@ -92,7 +86,6 @@ a:hover {
   box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
 }
 
-/* ======== PRODUTOS ======== */
 .produtos-container {
   display: flex;
   flex-wrap: wrap;
@@ -137,7 +130,6 @@ a:hover {
   margin-bottom: 0.7rem;
 }
 
-/* ======== BOTÕES ======== */
 button {
   background: linear-gradient(90deg, #7c3aed, #8b5cf6);
   color: white;
@@ -157,7 +149,6 @@ button:hover {
   background: linear-gradient(90deg, #6d28d9, #7c3aed);
 }
 
-/* ======== RESPONSIVO ======== */
 @media (max-width: 768px) {
   .produto-card {
     width: 100%;
@@ -178,7 +169,6 @@ button:hover {
   }
 }
 
-/* Remove bolinha do <li> */
 li {
   list-style-type: none;
 }
