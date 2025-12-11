@@ -21,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/login" element={<Login />} />
           <Route path="/cadastrar-produto" element={<CadastrarProduto />} />
         <Route path="/finalizar-compra" element={ <Elements stripe={stripe}><CartaoPagamento/></Elements>} />
+        <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
         </Routes>
       </BrowserRouter>
     </Elements>
