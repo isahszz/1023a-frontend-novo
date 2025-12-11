@@ -143,7 +143,7 @@ function App() {
       <div className="carrinho-container">
         <h2>Carrinho</h2>
 
-        {carrinho?.itens.length === 0 ? (
+        {carrinho&&carrinho?.itens?.length === 0 ? (
           <p>Seu carrinho está vazio</p>
         ) : (
           <ul>
