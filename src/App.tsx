@@ -53,7 +53,7 @@ function App() {
 
   useEffect(() => {
     api.get("/produtos")
-      .then((response) => setProdutos(response.data))
+      .then((response) =>{console.log(response.data);setProdutos(response.data)})
       .catch((error) => console.error('Erro ao buscar produtos:', error))
     api.get("/carrinho")
       .then((response) => setCarrinho(response.data))
