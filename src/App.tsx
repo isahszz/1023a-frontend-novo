@@ -118,7 +118,7 @@ function App() {
 
 
       <div className="produtos-container">
-        {produtos?.map((produto) => (
+        {produtos&&produtos?.map((produto) => (
           <div key={produto._id} className="produto-card">
             <h2>{produto.nome}</h2>
             <p>R$ {produto.preco}</p>
